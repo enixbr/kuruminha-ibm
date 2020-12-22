@@ -19,17 +19,29 @@ for (const file of commandFiles) {
 }
 
 const NO = ['discord.gg','https://discord.gg','http://discord.gg','discord.gg/','https://discord.gg/','http://discord.gg/',
+'d i s c o r d . g g','h t t p s : / / d i s c o r d . g g','h t t p : / / d i s c o r d . g g',
 'd i s c o r d . g g /','h t t p s : / / d i s c o r d . g g /','h t t p : / / d i s c o r d . g g /']
+
+function findWord(word, str) {
+    return str.split(' ').some(function(w){return w === word})
+}
 
 Client.on('message', message => {
 
     NO.forEach(NOO => {
-        if (message.content.includes(NOO)) {
+        var gay = findWord(NOO, message.content)
+        if (gay == true) {
             try {
             message.channel.send(':warning: O Usuário '+message.author.username+' está divulgando um servidor de discord!')
             message.delete() } catch (err) { return; }
         }
      })
+
+     if (message.channel.id == "790231316926038027") {
+        message.react('👍')
+        message.react('👎')
+        message.react('🤷')
+    }
 
     if (!message.content.startsWith(Prefix) || message.author.bot) return;
     const embed = new Discord.MessageEmbed();
@@ -41,7 +53,7 @@ Client.on('message', message => {
     let args = message.content.slice(Prefix.length).split(/ +/)
         command = args.shift().toLowerCase();
 
-    let commandList = ['ping','limpar']
+    let commandList = ['ping','limpar','mutar','desmutar']
 
     commandList.forEach(calledCommand => {
         if (command == calledCommand) {
@@ -50,11 +62,6 @@ Client.on('message', message => {
          logChannel.send(embed)
         }
     })
-
-    if (message.channel.id == "790231316926038027") {
-        message.react('👍')
-        message.reply("a")
-    }
 
     } catch (err) {
         embed.setTitle(':warning: O Bot encontrou um erro.')
@@ -73,8 +80,8 @@ Client.on('messageUpdate', function(oldMessage, newMessage) {
     .setColor(0xfce303)
     .setTitle(`:exclamation: Mensagem Editada | ${newMessage.channel.name}`)
     .addField(`Antes`,`${oldMessage}`,true)
-    .addField(`Depois`,`${newMessage}`,true)
     .addField('Autor da Mensagem', '<@'+newMessage.author+'>',true)
+    .addField(`Depois`,`${newMessage}`)
     .setTimestamp()
      logChannel.send(msg)
 })
