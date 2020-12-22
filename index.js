@@ -1,13 +1,8 @@
-const Discord = require('discord.js')
+﻿const Discord = require('discord.js')
 const Client = new Discord.Client()
 const Prefix = 'k!'
 
 const fs = require('fs')
-
-Client.on('ready', () => {
- console.log('Kuruminha is Ready!')
-})
-
 
 Client.commands = new Discord.Collection();
 
@@ -17,6 +12,11 @@ for (const file of commandFiles) {
 
     Client.commands.set(command.name, command)
 }
+
+Client.on('ready', () => {
+    console.log('Kuruminha is Ready!')
+    console.log(`${commandFiles.length} commands loaded!`)
+})
 
 const NO = ['discord.gg','https://discord.gg','http://discord.gg','discord.gg/','https://discord.gg/','http://discord.gg/',
 'd i s c o r d . g g','h t t p s : / / d i s c o r d . g g','h t t p : / / d i s c o r d . g g',
@@ -53,7 +53,7 @@ Client.on('message', message => {
     let args = message.content.slice(Prefix.length).split(/ +/)
         command = args.shift().toLowerCase();
 
-    let commandList = ['ping','limpar','mutar','desmutar']
+    let commandList = ['help','ping','limpar','mutar','desmutar','antiraid']
 
     commandList.forEach(calledCommand => {
         if (command == calledCommand) {
@@ -74,7 +74,7 @@ Client.on('message', message => {
 Client.on('messageUpdate', function(oldMessage, newMessage) {
     var logChannel = newMessage.guild.channels.cache.find(channels => channels.name == 'log');
     if (newMessage.channel == '790745323865374720') return;
-    if(newMessage == oldMessage) return;
+    if(newMessage.content == oldMessage.content) return;
     if (newMessage.author.bot) return;
     const msg = new Discord.MessageEmbed()
     .setColor(0xfce303)
