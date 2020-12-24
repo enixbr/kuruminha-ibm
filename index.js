@@ -53,6 +53,16 @@ Client.on('message', message => {
     let args = message.content.slice(Prefix.length).split(/ +/)
         command = args.shift().toLowerCase();
 
+        if (command == 'update') {
+            message.guild.channels.cache.forEach(myChann => {
+                if (myChann.type == "voice") {
+                    if (myChann.id == "791509305302974515") {
+                        myChann.setName(`${message.guild.memberCount - 7} Membros`)
+                    }
+                }
+            })
+        }
+
     let commandList = ['help','ping','limpar','mutar','desmutar','antiraid']
 
     commandList.forEach(calledCommand => {
@@ -66,12 +76,15 @@ Client.on('message', message => {
     } catch (err) {
         embed.setTitle(':warning: O Bot encontrou um erro.')
         embed.setDescription(err.toString())
+        console.log(err)
         logChannel.send(embed)
+        logChannel.send("<@731625052222521346>")
     }
 
 })
 
 Client.on('messageUpdate', function(oldMessage, newMessage) {
+
     var logChannel = newMessage.guild.channels.cache.find(channels => channels.name == 'log');
     if (newMessage.channel == '790745323865374720') return;
     if(newMessage.content == oldMessage.content) return;
@@ -96,6 +109,26 @@ Client.on('messageDelete', function(message) {
     .addField('Autor da Mensagem', '<@'+message.author+'>',true)
     .setTimestamp()
     logChannel.send(msg)
+})
+
+Client.on('guildMemberAdd', (member) => {
+    member.guild.channels.cache.forEach(myChann => {
+        if (myChann.type == "voice") {
+            if (myChann.id == "791509305302974515") {
+                myChann.setName(`${message.guild.memberCount - 7} Membros`)
+            }
+        }
+    })
+})
+
+Client.on('guildMemberRemove', (member) => {
+    member.guild.channels.cache.forEach(myChann => {
+        if (myChann.type == "voice") {
+            if (myChann.id == "791509305302974515") {
+                myChann.setName(`${message.guild.memberCount - 7} Membros`)
+            }
+        }
+    })
 })
 
 Client.login(process.env.token)
